@@ -4,6 +4,39 @@ All notable changes to COBRA FPS Feel Kit will be documented in this file.
 
 ---
 
+## Unreleased — Visual Pass: Environment, Models & Glow
+
+### Added
+
+- **AK-style rifle viewmodel** (`RifleModel.tscn`) rebuilt from a flat 3-box
+  shape into a recognizable silhouette: receiver, dust cover, wood handguard
+  and stock, curved (banana) magazine, pistol grip, forward-facing barrel
+  with front/rear sights.
+
+- **New pistol model** (`PistolModel.tscn`): compact handgun silhouette
+  (slide, frame, angled grip, trigger guard, muzzle). Displayed on a pedestal
+  in the FPS showcase alongside the rifle.
+
+- **Materials**: `Weapon_Wood_Default`, `Weapon_Mag_Default`,
+  `Target_Skin_Default` for the new models and humanoid targets.
+
+### Changed
+
+- **Human-shaped targets**: `TrainingTarget` and `Dummy` rebuilt from stacked
+  boxes into clear humanoid figures (legs, hips, torso, shoulders, arms,
+  hands, neck, rounded head). Collision shapes and the hit-flash `FrontPanel`
+  node are unchanged, so gameplay/scoring behave exactly as before.
+
+- **More realistic environment** in FeelShowcase, MagicShowcase and TestRange:
+  graded procedural sky, ACES tonemapping, **bloom/glow**, SSAO, light depth
+  fog, and subtle contrast/saturation grading. MagicShowcase uses a moodier
+  dusk palette with stronger glow.
+
+- **Emissive VFX bloom**: muzzle flash, bullet impacts and the fireball now
+  push past the HDR glow threshold so they actually light up the scene.
+
+---
+
 ## Unreleased — Movement & HUD Feel Polish
 
 ### Changed

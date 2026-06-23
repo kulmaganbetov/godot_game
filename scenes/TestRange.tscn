@@ -11,6 +11,12 @@
 [ext_resource type="Resource" path="res://materials/Wall_Default.tres" id="12_wall_material"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.36, 0.53, 0.84, 1)
+sky_horizon_color = Color(0.73, 0.79, 0.84, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.2, 0.22, 0.25, 1)
+ground_horizon_color = Color(0.6, 0.64, 0.69, 1)
+sun_angle_max = 30.0
 
 [sub_resource type="Sky" id="Sky_testrange"]
 sky_material = SubResource("ProceduralSkyMaterial_sky")
@@ -20,12 +26,28 @@ background_mode = 2
 sky = SubResource("Sky_testrange")
 ambient_light_source = 2
 ambient_light_color = Color(1, 1, 1, 1)
-ambient_light_energy = 0.6
+ambient_light_energy = 0.45
 ambient_light_sky_contribution = 1.0
+tonemap_mode = 3
+tonemap_white = 1.0
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 1.6
+glow_enabled = true
+glow_intensity = 0.55
+glow_strength = 1.0
+glow_bloom = 0.05
+glow_blend_mode = 1
+glow_hdr_threshold = 1.0
 fog_enabled = true
-fog_density = 0.002
+fog_light_color = Color(0.74, 0.79, 0.86, 1)
+fog_density = 0.0025
 fog_sky_affect = 0.1
 fog_light_affect = 0.3
+adjustment_enabled = true
+adjustment_brightness = 1.0
+adjustment_contrast = 1.05
+adjustment_saturation = 1.1
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
 size = Vector3(50, 0.5, 50)
