@@ -3,10 +3,14 @@ extends CanvasLayer
 class_name PauseMenu
 
 # Simple ESC pause menu: dim the screen, free the mouse, and offer
-# Resume / Quit. Works while the SceneTree is paused via PROCESS_MODE_ALWAYS.
+# Resume / Main Menu / Quit. Works while the SceneTree is paused via
+# PROCESS_MODE_ALWAYS.
+
+const MAIN_MENU_SCENE := "res://scenes/ui/MainMenu.tscn"
 
 @onready var _panel: Control = $Center/Panel
 @onready var _resume_button: Button = $Center/Panel/Margin/VBox/ResumeButton
+@onready var _menu_button: Button = $Center/Panel/Margin/VBox/MenuButton
 @onready var _quit_button: Button = $Center/Panel/Margin/VBox/QuitButton
 
 var _is_paused: bool = false
@@ -16,8 +20,9 @@ func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	visible = false
 	_resume_button.pressed.connect(resume_game)
+	_menu_button.pressed.connect(_on_menu_pressed)
 	_quit_button.pressed.connect(_on_quit_pressed)
-	for button in [_resume_button, _quit_button]:
+	for button in [_resume_button, _menu_button, _quit_button]:
 		button.mouse_entered.connect(_on_button_hover.bind(button))
 		button.mouse_exited.connect(_on_button_unhover.bind(button))
 
@@ -55,6 +60,13 @@ func resume_game() -> void:
 	get_tree().paused = false
 	visible = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
+func _on_menu_pressed() -> void:
+	# Always unpause before leaving, or the next scene loads paused.
+	get_tree().paused = false
+	_is_paused = false
+	get_tree().change_scene_to_file(MAIN_MENU_SCENE)
 
 
 func _on_quit_pressed() -> void:

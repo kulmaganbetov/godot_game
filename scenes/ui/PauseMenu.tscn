@@ -65,6 +65,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Продолжить"
 
+[node name="MenuButton" type="Button" parent="Center/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(300, 58)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Главное меню"
+
 [node name="QuitButton" type="Button" parent="Center/Panel/Margin/VBox"]
 custom_minimum_size = Vector2(300, 58)
 layout_mode = 2
