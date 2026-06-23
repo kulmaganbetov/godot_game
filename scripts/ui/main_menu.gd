@@ -5,7 +5,7 @@ class_name MainMenu
 # Title screen: Start / Settings / Quit, plus a small settings panel
 # (master volume + fullscreen). Set as the project's main scene.
 
-@export var game_scene_path: String = "res://scenes/demo/FeelShowcase.tscn"
+@export var game_scene_path: String = "res://scenes/ui/LevelSelect.tscn"
 
 @onready var _main_root: Control = $Center
 @onready var _settings_root: Control = $SettingsCenter

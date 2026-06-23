@@ -4,6 +4,29 @@ All notable changes to COBRA FPS Feel Kit will be documented in this file.
 
 ---
 
+## Unreleased — Level System (3 Timed Levels)
+
+### Added
+
+- **Level select** (`scenes/ui/LevelSelect.tscn`): reached from the main menu
+  (Старт), lists three levels with their time limit and best score.
+
+- **Three timed levels** (Time Attack) sharing one scene
+  (`scenes/levels/TimeAttackLevel.tscn`), parameterized via a new `GameState`
+  autoload:
+  - **Разминка** — 60s, calmer pace.
+  - **Тир** — 45s, faster spawns.
+  - **Хаос** — 30s, dense spawns.
+  Each counts down, spawns targets at random points up to a per-level cap
+  (`LevelSpawner`), tracks kills, and ends with a result screen showing kills,
+  1–3 stars (per-level thresholds) and the saved best score, plus
+  **Заново / В меню**.
+
+- **GameState autoload**: holds the selected level, level configs, and best
+  scores across scene changes.
+
+---
+
 ## Unreleased — Main Menu, Weapon Models & Target Fix
 
 ### Added

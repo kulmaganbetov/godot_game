@@ -1,0 +1,174 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://scripts/levels/time_attack_level.gd" id="1_level"]
+[ext_resource type="PackedScene" path="res://scenes/FeelPlayer.tscn" id="2_feelplayer"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="3_hud"]
+[ext_resource type="Resource" path="res://materials/Floor_Default.tres" id="4_floor"]
+[ext_resource type="Resource" path="res://materials/Wall_Default.tres" id="5_wall"]
+[ext_resource type="Script" path="res://scripts/levels/level_spawner.gd" id="6_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/ui/LevelHUD.tscn" id="7_levelhud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="8_pausemenu"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
+sky_top_color = Color(0.36, 0.53, 0.84, 1)
+sky_horizon_color = Color(0.73, 0.79, 0.84, 1)
+sky_curve = 0.12
+ground_bottom_color = Color(0.2, 0.22, 0.25, 1)
+ground_horizon_color = Color(0.6, 0.64, 0.69, 1)
+sun_angle_max = 30.0
+
+[sub_resource type="Sky" id="Sky_level"]
+sky_material = SubResource("ProceduralSkyMaterial_sky")
+
+[sub_resource type="Environment" id="Environment_level"]
+background_mode = 2
+sky = SubResource("Sky_level")
+ambient_light_source = 2
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_energy = 0.45
+tonemap_mode = 3
+ssao_enabled = true
+ssao_radius = 1.5
+ssao_intensity = 1.6
+glow_enabled = true
+glow_intensity = 0.55
+glow_strength = 1.0
+glow_bloom = 0.05
+glow_blend_mode = 1
+glow_hdr_threshold = 1.0
+fog_enabled = true
+fog_light_color = Color(0.74, 0.79, 0.86, 1)
+fog_density = 0.0025
+adjustment_enabled = true
+adjustment_contrast = 1.05
+adjustment_saturation = 1.1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(40, 0.5, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+size = Vector3(40, 0.5, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_side"]
+size = Vector3(0.5, 5, 40)
+
+[sub_resource type="BoxMesh" id="BoxMesh_side"]
+size = Vector3(0.5, 5, 40)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_end"]
+size = Vector3(40, 5, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_end"]
+size = Vector3(40, 5, 0.5)
+
+[node name="TimeAttackLevel" type="Node3D"]
+script = ExtResource("1_level")
+spawner_path = NodePath("Spawner")
+level_hud_path = NodePath("LevelHUD")
+hud_path = NodePath("HUD")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_level")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.642788, -0.42388, 0.638435, 0, 0.83205, 0.554701, -0.766044, -0.356563, 0.537139, 0, 0, 0)
+light_color = Color(1, 0.97, 0.94, 1)
+light_energy = 1.6
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_floor")
+surface_material_override/0 = ExtResource("4_floor")
+
+[node name="LeftWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LeftWall"]
+shape = SubResource("BoxShape3D_side")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LeftWall"]
+mesh = SubResource("BoxMesh_side")
+surface_material_override/0 = ExtResource("5_wall")
+
+[node name="RightWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RightWall"]
+shape = SubResource("BoxShape3D_side")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RightWall"]
+mesh = SubResource("BoxMesh_side")
+surface_material_override/0 = ExtResource("5_wall")
+
+[node name="BackWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -20)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BackWall"]
+shape = SubResource("BoxShape3D_end")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BackWall"]
+mesh = SubResource("BoxMesh_end")
+surface_material_override/0 = ExtResource("5_wall")
+
+[node name="FrontWall" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 20)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FrontWall"]
+shape = SubResource("BoxShape3D_end")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="FrontWall"]
+mesh = SubResource("BoxMesh_end")
+surface_material_override/0 = ExtResource("5_wall")
+
+[node name="FeelPlayer" parent="." instance=ExtResource("2_feelplayer")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 16)
+
+[node name="HUD" parent="." instance=ExtResource("3_hud")]
+player_path = NodePath("FeelPlayer")
+show_block_hint = false
+
+[node name="SpawnPoints" type="Node3D" parent="."]
+
+[node name="P1" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12, 0, -10)
+
+[node name="P2" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -12)
+
+[node name="P3" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, -10)
+
+[node name="P4" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, -2)
+
+[node name="P5" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, -2)
+
+[node name="P6" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 3)
+
+[node name="P7" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 3)
+
+[node name="P8" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+
+[node name="P9" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -7)
+
+[node name="P10" type="Marker3D" parent="SpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, -7)
+
+[node name="Spawner" type="Node3D" parent="."]
+script = ExtResource("6_spawner")
+spawn_points_path = NodePath("../SpawnPoints")
+
+[node name="LevelHUD" parent="." instance=ExtResource("7_levelhud")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("8_pausemenu")]
