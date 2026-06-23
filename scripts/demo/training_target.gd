@@ -8,9 +8,15 @@ class_name TrainingTarget
 
 @export var destroy_vfx_scene: PackedScene = null
 
+@export var auto_respawn: bool = true
+
+@export var respawn_delay: float = 5.0
+
 
 
 @onready var _front_panel: MeshInstance3D = get_node_or_null("Visual/FrontPanel") as MeshInstance3D
+
+@onready var _collision: CollisionShape3D = get_node_or_null("CollisionShape3D") as CollisionShape3D
 
 var _flash_time: float = 0.0
 
@@ -161,3 +167,55 @@ func _on_died(_killer: Node) -> void:
 				root.add_child(vfx)
 
 				vfx.global_transform.origin = spawn_position
+
+
+
+# Respawn instead of disappearing, so the range stays populated.
+func _handle_death(_killer: Node) -> void:
+
+	if not auto_respawn:
+
+		queue_free()
+
+		return
+
+	_set_target_active(false)
+
+	get_tree().create_timer(respawn_delay).timeout.connect(_respawn)
+
+
+
+func _set_target_active(active: bool) -> void:
+
+	visible = active
+
+	if _collision:
+
+		_collision.set_deferred("disabled", not active)
+
+
+
+func _respawn() -> void:
+
+	# Restore health and reset the hit-flash color, then pop back in.
+
+	_current_health = max_health
+
+	_flash_time = 0.0
+
+	if _front_panel:
+
+		var mat := _front_panel.material_override as StandardMaterial3D
+
+		if mat:
+
+			mat.albedo_color = _front_panel_default_color
+
+	_set_target_active(true)
+
+	# Small scale "pop" so the respawn reads clearly.
+
+	scale = Vector3(0.6, 0.6, 0.6)
+
+	create_tween().tween_property(self, "scale", Vector3.ONE, 0.25) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)

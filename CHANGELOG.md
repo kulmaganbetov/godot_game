@@ -4,6 +4,27 @@ All notable changes to COBRA FPS Feel Kit will be documented in this file.
 
 ---
 
+## Unreleased — Pause Menu, Target Respawn & Kill Counter
+
+### Added
+
+- **ESC pause menu** (`scenes/ui/PauseMenu.tscn`): pressing Escape pauses the
+  game, frees the mouse and shows a styled panel with **Продолжить (Resume)**
+  and **Выйти (Quit)** buttons (animated fade-in + button hover scale). Added
+  to FeelShowcase, MagicShowcase, TestRange and WW2Bootcamp. Resolves not
+  being able to exit the game.
+
+- **Target respawn**: destroyed `TrainingTarget`s now reappear after a
+  configurable delay (default **5s**, `respawn_delay` / `auto_respawn`) with a
+  small pop-in, instead of being gone for good. `Damageable._handle_death()`
+  is now overridable, so the base behavior (e.g. the Dummy) is unchanged.
+
+- **Kill counter**: prominent `KILLS: N` HUD readout that pops on every kill
+  and keeps counting across respawns (alongside the existing Targets/Streak/
+  Accuracy stats).
+
+---
+
 ## Unreleased — Visual Pass: Environment, Models & Glow
 
 ### Added

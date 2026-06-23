@@ -1,4 +1,6 @@
-[gd_scene load_steps=25 format=3 uid="uid://b8h7kxp9q3r5n"]
+[gd_scene load_steps=26 format=3 uid="uid://b8h7kxp9q3r5n"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="pausemenu_1"]
 
 [ext_resource type="PackedScene" path="res://scenes/FeelPlayer.tscn" id="1_feelplayer"]
 [ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="2_hud"]
@@ -228,3 +230,5 @@ font_size = 120
 outline_size = 40
 billboard = 1
 
+
+[node name="PauseMenu" parent="." instance=ExtResource("pausemenu_1")]

@@ -24,6 +24,12 @@ func _ready() -> void:
 
 func apply_damage(amount: float, killer: Node = null) -> bool:
 
+	# Ignore hits while already dead (e.g. waiting to respawn).
+
+	if _current_health <= 0.0:
+
+		return false
+
 	_current_health -= amount
 
 	if _current_health <= 0.0:
@@ -34,8 +40,16 @@ func apply_damage(amount: float, killer: Node = null) -> bool:
 
 			killer.emit_signal("kill_confirmed", self)
 
-		queue_free()
+		_handle_death(killer)
 
 		return true  # Return true if killed
 
 	return false  # Return false if still alive
+
+
+
+# Overridable death behavior. Base implementation removes the node;
+# subclasses (e.g. TrainingTarget) can respawn instead.
+func _handle_death(_killer: Node) -> void:
+
+	queue_free()
