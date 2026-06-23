@@ -4,6 +4,33 @@ All notable changes to COBRA FPS Feel Kit will be documented in this file.
 
 ---
 
+## Unreleased — Movement & HUD Feel Polish
+
+### Changed
+
+- **Smooth acceleration/deceleration** for player movement. Horizontal
+  velocity now ramps up and slows down (ground and air rates) instead of
+  snapping instantly, removing the "wooden" stop/start feel. Rates are
+  per-profile tunable on `PlayerFeelConfig` (`ground_acceleration`,
+  `ground_deceleration`, `air_acceleration`, `air_deceleration`) and tuned
+  distinctly for Twitchy / WW2 / Arcade / Exploration.
+
+- **Forgiving jumps** via coyote time and jump buffering
+  (`coyote_time`, `jump_buffer_time` on `PlayerFeelConfig`), so jumps still
+  register just after leaving a ledge or just before landing.
+
+### Added
+
+- **Landing camera impact**: hard drops produce a subtle camera shake
+  (`land_shake_threshold` / `land_shake_scale` on `FeelPlayer`) via a new
+  reusable `RecoilController.add_shake()` hook.
+
+- **HUD juice (Tween-driven, no per-frame cost)**: hitmarker now punches and
+  fades, kills pop the Targets/Best-Streak readouts, reloads pulse the ammo
+  label (which also turns red when low), and the title/prompt text eases in.
+
+---
+
 ## v0.4.0 — Initial Public Feel Kit
 
 **Release Date:** 2025

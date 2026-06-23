@@ -39,7 +39,19 @@ var sprint_speed: float = 8.0
 
 var crouch_speed: float = 3.0
 
+var ground_acceleration: float = 12.0
+
+var ground_deceleration: float = 14.0
+
+var air_acceleration: float = 4.0
+
+var air_deceleration: float = 2.0
+
 var jump_force: float = 4.5
+
+var coyote_time: float = 0.12
+
+var jump_buffer_time: float = 0.12
 
 var mouse_sensitivity: float = 0.12
 
@@ -121,6 +133,21 @@ var _target_camera_height: float
 
 var _current_camera_height: float
 
+var _coyote_timer: float = 0.0
+
+var _jump_buffer_timer: float = 0.0
+
+var _air_fall_speed: float = 0.0
+
+@export_group("Landing")
+
+# Minimum downward speed before a landing produces a camera impact, and how
+# strongly that impact reads. Keeps small hops clean while selling big drops.
+
+@export var land_shake_threshold: float = 5.0
+
+@export var land_shake_scale: float = 0.012
+
 
 
 func _apply_feel_config() -> void:
@@ -139,7 +166,21 @@ func _apply_feel_config() -> void:
 
 
 
+	ground_acceleration = feel_config.ground_acceleration
+
+	ground_deceleration = feel_config.ground_deceleration
+
+	air_acceleration = feel_config.air_acceleration
+
+	air_deceleration = feel_config.air_deceleration
+
+
+
 	jump_force = feel_config.jump_force
+
+	coyote_time = feel_config.coyote_time
+
+	jump_buffer_time = feel_config.jump_buffer_time
 
 
 
@@ -287,9 +328,9 @@ func _handle_movement(delta: float) -> void:
 
 
 
-	var desired_velocity := (forward * input_dir.y + right * input_dir.x)
+	var desired_dir := (forward * input_dir.y + right * input_dir.x)
 
-	desired_velocity.y = 0.0
+	desired_dir.y = 0.0
 
 
 
@@ -305,9 +346,55 @@ func _handle_movement(delta: float) -> void:
 
 
 
-	_velocity.x = desired_velocity.x * speed
+	var was_on_floor := is_on_floor()
 
-	_velocity.z = desired_velocity.z * speed
+	var has_input := input_dir.length() > 0.01
+
+
+
+	# Smoothly accelerate/decelerate horizontal velocity so starts and stops
+
+	# carry a little weight instead of snapping on/off (the "wooden" feel).
+
+	var target_h := Vector2(desired_dir.x, desired_dir.z) * speed
+
+	var current_h := Vector2(_velocity.x, _velocity.z)
+
+	var rate: float
+
+	if was_on_floor:
+
+		rate = ground_acceleration if has_input else ground_deceleration
+
+	else:
+
+		rate = air_acceleration if has_input else air_deceleration
+
+	current_h = current_h.lerp(target_h, clamp(rate * delta, 0.0, 1.0))
+
+	_velocity.x = current_h.x
+
+	_velocity.z = current_h.z
+
+
+
+	# Coyote time + jump buffering for forgiving, responsive jumps.
+
+	if Input.is_action_just_pressed("jump"):
+
+		_jump_buffer_timer = jump_buffer_time
+
+	else:
+
+		_jump_buffer_timer = max(_jump_buffer_timer - delta, 0.0)
+
+	if was_on_floor:
+
+		_coyote_timer = coyote_time
+
+	else:
+
+		_coyote_timer = max(_coyote_timer - delta, 0.0)
 
 
 
@@ -317,23 +404,31 @@ func _handle_movement(delta: float) -> void:
 
 	var gravity: float = float(gravity_value) * delta
 
-	var was_on_floor := is_on_floor()
 
-	if was_on_floor:
 
-		# On floor: only jump if button pressed, otherwise stay on ground
+	var jumped := false
 
-		if Input.is_action_just_pressed("jump"):
+	if _jump_buffer_timer > 0.0 and _coyote_timer > 0.0:
 
-			_velocity.y = jump_force
+		_velocity.y = jump_force
 
-		else:
+		_jump_buffer_timer = 0.0
 
-			# Force velocity to 0 or slightly negative to ensure floor contact
+		_coyote_timer = 0.0
 
-			_velocity.y = -0.1
+		jumped = true
 
-	else:
+
+
+	if was_on_floor and not jumped:
+
+		# Slightly negative to keep firm floor contact.
+
+		_velocity.y = -0.1
+
+		_air_fall_speed = 0.0
+
+	elif not was_on_floor:
 
 		# In air: apply gravity (subtract to pull down)
 
@@ -347,6 +442,8 @@ func _handle_movement(delta: float) -> void:
 
 			_velocity.y = -max_fall_speed
 
+		_air_fall_speed = -_velocity.y
+
 
 
 	velocity = _velocity
@@ -359,7 +456,13 @@ func _handle_movement(delta: float) -> void:
 
 	var now_on_floor := is_on_floor()
 
-	if now_on_floor and not Input.is_action_just_pressed("jump"):
+	if now_on_floor and not jumped:
+
+		# Landed this frame: sell hard drops with a small camera impact.
+
+		if not was_on_floor and _air_fall_speed > land_shake_threshold and recoil_pivot:
+
+			recoil_pivot.add_shake((_air_fall_speed - land_shake_threshold) * land_shake_scale)
 
 		_velocity.y = 0.0
 

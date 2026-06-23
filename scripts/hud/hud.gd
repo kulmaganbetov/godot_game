@@ -96,6 +96,10 @@ var _best_streak: int = 0
 
 var _player: Node
 
+var _hitmarker_tween: Tween
+
+var _last_ammo: int = -1
+
 
 
 func _ready() -> void:
@@ -137,6 +141,13 @@ func _ready() -> void:
 	if _title_label != null:
 
 		_title_label.text = "COBRA FPS Feel Kit"
+
+		# Gentle fade-in so the HUD eases on instead of popping.
+
+		_title_label.modulate.a = 0.0
+
+		create_tween().tween_property(_title_label, "modulate:a", 1.0, 0.6) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 	# Resolve player reference
 
@@ -220,6 +231,24 @@ func _on_ammo_changed(current: int, max_ammo: int) -> void:
 
 		ammo_label.text = "AMMO: %d / %d" % [current, max_ammo]
 
+		# Warn the player visually when the magazine runs low.
+
+		if max_ammo > 0 and current <= int(ceil(max_ammo * 0.25)):
+
+			ammo_label.modulate = Color(1.0, 0.45, 0.4)
+
+		else:
+
+			ammo_label.modulate = Color(1, 1, 1)
+
+		# Pulse on reload (ammo went up) for a satisfying "topped up" beat.
+
+		if current > _last_ammo and _last_ammo >= 0:
+
+			_pulse_control(ammo_label, 1.18)
+
+	_last_ammo = current
+
 
 
 func _on_hit_confirmed(target: Node) -> void:
@@ -241,10 +270,6 @@ func _on_hit_confirmed(target: Node) -> void:
 		return
 
 	_show_hitmarker(hitmarker_color)
-
-	if hitmarker_timer:
-
-		hitmarker_timer.start()
 
 	# Stats: any hit counts as a "hit" for accuracy
 
@@ -278,29 +303,39 @@ func _on_kill_confirmed(target: Node) -> void:
 
 	_show_hitmarker(killmarker_color)
 
-	if hitmarker_timer:
-
-		hitmarker_timer.start()
-
 	# Stats: a kill is a destroyed target
 
 	_targets_hit += 1
 
 	_current_streak += 1
 
-	if _current_streak > _best_streak:
+	var new_best := _current_streak > _best_streak
+
+	if new_best:
 
 		_best_streak = _current_streak
 
 	_update_stats_labels()
 
+	# Reward feedback: punch the relevant stat readouts on a kill.
+
+	_pulse_control(stats_targets_label, 1.25)
+
+	if new_best:
+
+		_pulse_control(stats_streak_label, 1.25)
+
 
 
 func _show_hitmarker(color: Color) -> void:
 
-	if hitmarker == null or hitmarker_timer == null:
+	if hitmarker == null:
 
 		return
+
+	if _hitmarker_tween and _hitmarker_tween.is_valid():
+
+		_hitmarker_tween.kill()
 
 	hitmarker.modulate = color
 
@@ -308,7 +343,36 @@ func _show_hitmarker(color: Color) -> void:
 
 	hitmarker.visible = true
 
-	hitmarker_timer.start()
+	hitmarker.pivot_offset = hitmarker.size * 0.5
+
+	hitmarker.scale = Vector2(1.7, 1.7)
+
+	# Snap big, then settle and fade — reads as a crisp, juicy confirmation.
+
+	_hitmarker_tween = create_tween().set_parallel(true)
+
+	_hitmarker_tween.tween_property(hitmarker, "scale", Vector2.ONE, 0.13) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+	_hitmarker_tween.tween_property(hitmarker, "modulate:a", 0.0, 0.22) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
+
+
+
+func _pulse_control(node: Control, amount: float = 1.2) -> void:
+
+	# Quick scale "pop" back to rest. Used for stat/ammo feedback.
+
+	if node == null:
+
+		return
+
+	node.pivot_offset = node.size * 0.5
+
+	node.scale = Vector2(amount, amount)
+
+	create_tween().tween_property(node, "scale", Vector2.ONE, 0.18) \
+		.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 
 
@@ -425,9 +489,20 @@ func set_prompt(text: String) -> void:
 
 		return
 
+	var has_text := text.strip_edges() != ""
+
 	prompt_label.text = text
 
-	prompt_label.visible = text.strip_edges() != ""
+	prompt_label.visible = has_text
+
+	# Fade the prompt in so new objectives/hints ease onscreen.
+
+	if has_text:
+
+		prompt_label.modulate.a = 0.0
+
+		create_tween().tween_property(prompt_label, "modulate:a", 1.0, 0.25) \
+			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
 

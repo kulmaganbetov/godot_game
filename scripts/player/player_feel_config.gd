@@ -14,9 +14,31 @@ class_name PlayerFeelConfig
 
 
 
+@export_group("Movement Feel")
+
+# How quickly horizontal velocity ramps up / slows down. Higher = snappier,
+# lower = heavier/more momentum. These remove the instant "wooden" stop-start.
+
+@export var ground_acceleration: float = 12.0
+
+@export var ground_deceleration: float = 14.0
+
+@export var air_acceleration: float = 4.0
+
+@export var air_deceleration: float = 2.0
+
+
+
 @export_group("Jump")
 
 @export var jump_force: float = 4.5
+
+# Forgiving jump timing: still jump shortly after leaving a ledge (coyote)
+# and when pressing jump slightly before landing (buffer).
+
+@export var coyote_time: float = 0.12
+
+@export var jump_buffer_time: float = 0.12
 
 
 

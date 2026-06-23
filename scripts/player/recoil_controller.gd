@@ -43,6 +43,18 @@ func _ready() -> void:
 
 
 
+func add_shake(amount: float) -> void:
+
+	# Generic camera shake hook (landing impacts, explosions, etc.)
+
+	if not shake_enabled:
+
+		return
+
+	_shake_amount = min(_shake_amount + amount * shake_scale, 0.1)
+
+
+
 func apply_recoil(offset: Vector2, scale_multiplier: float = 1.0) -> void:
 
 	# Scale the incoming offset for both rotation and shake
