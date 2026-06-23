@@ -374,7 +374,7 @@ func _handle_movement(delta: float) -> void:
 
 	_velocity.x = current_h.x
 
-	_velocity.z = current_h.z
+	_velocity.z = current_h.y
 
 
 
