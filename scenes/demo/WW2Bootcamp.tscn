@@ -1,4 +1,6 @@
-[gd_scene load_steps=49 format=3 uid="uid://4la3x4tiacs7"]
+[gd_scene load_steps=50 format=3 uid="uid://4la3x4tiacs7"]
+
+[ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="pausemenu_1"]
 
 [ext_resource type="PackedScene" path="res://scenes/FeelPlayer.tscn" id="1_feelplayer"]
 [ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="2_hud"]
@@ -559,3 +561,5 @@ light_energy = 0.9
 shadow_enabled = true
 directional_shadow_mode = 1
 directional_shadow_max_distance = 50.0
+
+[node name="PauseMenu" parent="." instance=ExtResource("pausemenu_1")]

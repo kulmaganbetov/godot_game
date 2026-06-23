@@ -34,6 +34,8 @@ class_name FeelHUD
 
 @onready var profile_label: Label = $ProfileLabel
 
+@onready var _kills_label: Label = get_node_or_null("KillsLabel") as Label
+
 @onready var _title_label: Label = get_node_or_null("TitleLabel") as Label
 
 @onready var _block_tint: ColorRect = get_node_or_null("BlockTint") as ColorRect
@@ -321,6 +323,8 @@ func _on_kill_confirmed(target: Node) -> void:
 
 	_pulse_control(stats_targets_label, 1.25)
 
+	_pulse_control(_kills_label, 1.3)
+
 	if new_best:
 
 		_pulse_control(stats_streak_label, 1.25)
@@ -531,6 +535,10 @@ func _on_shot_fired() -> void:
 
 
 func _update_stats_labels() -> void:
+
+	if _kills_label:
+
+		_kills_label.text = "KILLS: %d" % _targets_hit
 
 	if stats_targets_label:
 
