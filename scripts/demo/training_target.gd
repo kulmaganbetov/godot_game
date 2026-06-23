@@ -26,6 +26,10 @@ var _front_panel_default_color: Color = Color.WHITE
 
 func _ready() -> void:
 
+	# Initialize health (base _ready) before anything else.
+
+	super._ready()
+
 	add_to_group("training_target")
 
 	

@@ -1,0 +1,157 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/main_menu.gd" id="1_mainmenu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.05, 0.06, 0.09, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.09, 0.1, 0.13, 0.97)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.3, 0.7, 1, 0.5)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mainmenu")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainVBox" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="Center/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.78, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 0.85)
+theme_override_constants/outline_size = 14
+theme_override_font_sizes/font_size = 120
+text = "KOSTER"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="Center/MainVBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.66, 0.74, 1)
+theme_override_font_sizes/font_size = 22
+text = "FPS FEEL KIT"
+horizontal_alignment = 1
+
+[node name="Spacer" type="Control" parent="Center/MainVBox"]
+custom_minimum_size = Vector2(0, 36)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="Center/MainVBox"]
+custom_minimum_size = Vector2(340, 62)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Старт"
+
+[node name="SettingsButton" type="Button" parent="Center/MainVBox"]
+custom_minimum_size = Vector2(340, 62)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Настройки"
+
+[node name="QuitButton" type="Button" parent="Center/MainVBox"]
+custom_minimum_size = Vector2(340, 62)
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Выход"
+
+[node name="SettingsCenter" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="SettingsCenter"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Margin" type="MarginContainer" parent="SettingsCenter/Panel"]
+layout_mode = 2
+theme_override_constants/margin_left = 44
+theme_override_constants/margin_top = 36
+theme_override_constants/margin_right = 44
+theme_override_constants/margin_bottom = 36
+
+[node name="VBox" type="VBoxContainer" parent="SettingsCenter/Panel/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SettingsTitle" type="Label" parent="SettingsCenter/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "НАСТРОЙКИ"
+horizontal_alignment = 1
+
+[node name="VolumeRow" type="HBoxContainer" parent="SettingsCenter/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="VolumeLabel" type="Label" parent="SettingsCenter/Panel/Margin/VBox/VolumeRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Громкость"
+vertical_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="SettingsCenter/Panel/Margin/VBox/VolumeRow"]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_vertical = 4
+max_value = 100.0
+value = 100.0
+
+[node name="FullscreenRow" type="HBoxContainer" parent="SettingsCenter/Panel/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="FullscreenLabel" type="Label" parent="SettingsCenter/Panel/Margin/VBox/FullscreenRow"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "Полный экран"
+vertical_alignment = 1
+
+[node name="FullscreenCheck" type="CheckButton" parent="SettingsCenter/Panel/Margin/VBox/FullscreenRow"]
+layout_mode = 2
+
+[node name="Spacer2" type="Control" parent="SettingsCenter/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="SettingsCenter/Panel/Margin/VBox"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Назад"

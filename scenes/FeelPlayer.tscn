@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/player/feel_player.gd" id="1_feelplayer"]
 [ext_resource type="Script" path="res://scripts/player/weapon_rig.gd" id="2_weaponrig"]
@@ -8,6 +8,8 @@
 [ext_resource type="Resource" path="res://config/MeleeConfig.tres" id="6_meleeconfig"]
 [ext_resource type="Script" path="res://scripts/player/recoil_controller.gd" id="7_recoilcontroller"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/RifleModel.tscn" id="8_riflemodel"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/SMGModel.tscn" id="10_smgmodel"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/ShotgunModel.tscn" id="11_shotgunmodel"]
 [ext_resource type="Resource" path="res://config/Feel_Default.tres" id="9_feeldefault"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_player"]
@@ -43,6 +45,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
 [node name="RifleModel" parent="RecoilPivot/Camera3D/WeaponRig/Weapon" instance=ExtResource("8_riflemodel")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.35, 0.4)
+
+[node name="SMGModel" parent="RecoilPivot/Camera3D/WeaponRig/Weapon" instance=ExtResource("10_smgmodel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.35, 0.4)
+visible = false
+
+[node name="ShotgunModel" parent="RecoilPivot/Camera3D/WeaponRig/Weapon" instance=ExtResource("11_shotgunmodel")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, -0.35, 0.4)
+visible = false
 
 [node name="MeleeWeapon" type="Node3D" parent="RecoilPivot/Camera3D"]
 script = ExtResource("5_meleeweapon")

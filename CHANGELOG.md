@@ -4,6 +4,31 @@ All notable changes to COBRA FPS Feel Kit will be documented in this file.
 
 ---
 
+## Unreleased — Main Menu, Weapon Models & Target Fix
+
+### Added
+
+- **Main menu** (`scenes/ui/MainMenu.tscn`) titled **KOSTER**, set as the
+  project's start scene: **Старт / Настройки / Выход**. Settings panel covers
+  master volume and fullscreen. Animated fade-in, title pulse, button hover.
+
+- **Per-weapon viewmodels**: distinct **SMG** and **Shotgun** models added
+  alongside the AK rifle. The in-hand model now switches when you pick a
+  weapon from a pedestal, and each pedestal displays its own correctly-scaled
+  weapon (previously every pedestal/hand showed the AK).
+
+### Fixed
+
+- **Targets not dying**: `TrainingTarget._ready()` never called
+  `super._ready()`, so health stayed at 0 and the new dead-guard blocked all
+  damage. Health is now initialized properly — targets take real damage,
+  show the hit-flash on non-lethal hits, die, and respawn as intended.
+
+- **Pedestal weapon displays** were mis-scaled/mis-oriented; replaced with
+  clean, correctly-sized display models per pedestal.
+
+---
+
 ## Unreleased — Pause Menu, Target Respawn & Kill Counter
 
 ### Added

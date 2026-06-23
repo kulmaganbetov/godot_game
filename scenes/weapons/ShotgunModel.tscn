@@ -1,0 +1,58 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Resource" path="res://materials/Weapon_Body_Default.tres" id="1_weapon_body"]
+[ext_resource type="Resource" path="res://materials/Weapon_Wood_Default.tres" id="2_weapon_wood"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_barrel"]
+top_radius = 0.032
+bottom_radius = 0.032
+height = 0.9
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_tube"]
+top_radius = 0.025
+bottom_radius = 0.025
+height = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_pump"]
+size = Vector3(0.09, 0.09, 0.22)
+
+[sub_resource type="BoxMesh" id="BoxMesh_receiver"]
+size = Vector3(0.1, 0.14, 0.42)
+
+[sub_resource type="BoxMesh" id="BoxMesh_grip"]
+size = Vector3(0.06, 0.18, 0.09)
+
+[sub_resource type="BoxMesh" id="BoxMesh_stock"]
+size = Vector3(0.07, 0.14, 0.46)
+
+[node name="ShotgunModel" type="Node3D"]
+
+[node name="Barrel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0.05, -0.75)
+mesh = SubResource("CylinderMesh_barrel")
+surface_material_override/0 = ExtResource("1_weapon_body")
+
+[node name="MagTube" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.02, -0.7)
+mesh = SubResource("CylinderMesh_tube")
+surface_material_override/0 = ExtResource("1_weapon_body")
+
+[node name="Pump" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, -0.6)
+mesh = SubResource("BoxMesh_pump")
+surface_material_override/0 = ExtResource("2_weapon_wood")
+
+[node name="Receiver" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.18)
+mesh = SubResource("BoxMesh_receiver")
+surface_material_override/0 = ExtResource("1_weapon_body")
+
+[node name="Grip" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.94, -0.342, 0, 0.342, 0.94, 0, -0.14, 0.02)
+mesh = SubResource("BoxMesh_grip")
+surface_material_override/0 = ExtResource("2_weapon_wood")
+
+[node name="Stock" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.02, 0.32)
+mesh = SubResource("BoxMesh_stock")
+surface_material_override/0 = ExtResource("2_weapon_wood")

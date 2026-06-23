@@ -14,6 +14,13 @@ const WEAPON_KIND_SMG: StringName = "smg"
 const WEAPON_KIND_RIFLE: StringName = "rifle"
 const WEAPON_KIND_SHOTGUN: StringName = "shotgun"
 
+# Maps a weapon kind to the viewmodel node name under the Weapon node.
+const WEAPON_MODEL_NAMES := {
+	"smg": "SMGModel",
+	"rifle": "RifleModel",
+	"shotgun": "ShotgunModel",
+}
+
 var _current_weapon_kind: StringName = WEAPON_KIND_SMG
 
 func _ready() -> void:
@@ -127,6 +134,20 @@ func _apply_current_weapon_for_profile(profile_name: String = "") -> void:
 			weapon.config = cfg
 	else:
 		push_warning("FeelShowcase: Could not load weapon config for profile '%s' kind '%s'" % [profile_name, _current_weapon_kind])
+
+	# Keep the visible viewmodel in sync with the selected weapon kind.
+	_update_weapon_model(weapon)
+
+func _update_weapon_model(weapon: Node) -> void:
+	if weapon == null:
+		return
+	var want: String = WEAPON_MODEL_NAMES.get(String(_current_weapon_kind), "RifleModel")
+	for child in weapon.get_children():
+		var node_3d := child as Node3D
+		if node_3d == null:
+			continue
+		if WEAPON_MODEL_NAMES.values().has(String(node_3d.name)):
+			node_3d.visible = String(node_3d.name) == want
 
 func set_weapon_kind(kind: StringName) -> void:
 	_current_weapon_kind = kind

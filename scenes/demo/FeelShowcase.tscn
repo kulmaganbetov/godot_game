@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://kr8qpxbsqk5w"]
+[gd_scene load_steps=29 format=3 uid="uid://kr8qpxbsqk5w"]
 
 [ext_resource type="PackedScene" path="res://scenes/ui/PauseMenu.tscn" id="pausemenu_1"]
 
@@ -16,7 +16,8 @@
 [ext_resource type="Resource" path="res://materials/Wall_Default.tres" id="12_wall_material"]
 [ext_resource type="Script" path="res://scripts/demo/weapon_pedestal.gd" id="13_weaponpedestal"]
 [ext_resource type="PackedScene" path="res://scenes/weapons/RifleModel.tscn" id="14_riflemodel"]
-[ext_resource type="PackedScene" path="res://scenes/weapons/PistolModel.tscn" id="15_pistolmodel"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/SMGModel.tscn" id="16_smgmodel"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/ShotgunModel.tscn" id="17_shotgunmodel"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 sky_top_color = Color(0.36, 0.53, 0.84, 1)
@@ -270,8 +271,8 @@ font_size = 24
 outline_size = 8
 visible = false
 
-[node name="DisplayPistol" parent="WeaponPedestal_SMG" instance=ExtResource("15_pistolmodel")]
-transform = Transform3D(0, 0, -2.5, 0, 2.5, 0, 2.5, 0, 0, 0, 0.7, 0)
+[node name="DisplaySMG" parent="WeaponPedestal_SMG" instance=ExtResource("16_smgmodel")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.42, 0)
 
 [node name="WeaponPedestal_Rifle" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 38)
@@ -302,7 +303,7 @@ outline_size = 8
 visible = false
 
 [node name="DisplayRifle" parent="WeaponPedestal_Rifle" instance=ExtResource("14_riflemodel")]
-transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.8, 0)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.42, 0)
 
 [node name="WeaponPedestal_Shotgun" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0.25, -2)
@@ -331,6 +332,9 @@ text = "Press E to interact"
 font_size = 24
 outline_size = 8
 visible = false
+
+[node name="DisplayShotgun" parent="WeaponPedestal_Shotgun" instance=ExtResource("17_shotgunmodel")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0.42, 0)
 
 [node name="ShowcaseTitle" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 35)
