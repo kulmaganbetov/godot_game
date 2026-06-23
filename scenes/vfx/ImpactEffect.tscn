@@ -8,7 +8,9 @@ size = Vector2(0.15, 0.15)
 [sub_resource type="StandardMaterial3D" id="Material_impact"]
 emission_enabled = true
 emission = Color(1, 0.6, 0.2, 1)
+emission_energy = 3.0
 albedo_color = Color(1, 0.8, 0.4, 1)
+shading_mode = 0
 
 [node name="ImpactEffect" type="Node3D"]
 script = ExtResource("1_impact_script")
