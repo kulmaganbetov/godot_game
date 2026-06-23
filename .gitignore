@@ -2,3 +2,8 @@
 .godot/
 /android/
 releases/
+
+# Export output
+build/
+*.exe
+*.pck
